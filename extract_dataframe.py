@@ -1,6 +1,13 @@
-import json
+import subprocess
 import pandas as pd
 # from textblob import TextBlob
+
+
+def read_json_file() -> pd.DataFrame:
+    tweet_df = pd.read_json(
+        "D:/10XAcademy/Twitter Data/AfricaTwitterData.json", lines=True)
+    return tweet_df
+
 
 class TweetDfExtractor:
     """
@@ -11,21 +18,20 @@ class TweetDfExtractor:
     dataframe
     """
 
-    def __init__(self, tweets_list):
+    def __init__(self, tweets_df: pd.DataFrame):
         # class constructor
-        self.tweets_list = tweets_list
+        self.tweets_df = tweets_df
 
-    def get_columns(self):
-        iterable = iter(self.tweets_list)
-        tweet_dict = dict(self.tweets_list)
-        print(tweet_dict.keys())
+    def get_columns(self) -> map:
+        return iter(self.tweets_df.columns)
 
-    def get_tweet_df(self, save=False) -> pd.DataFrame:
-        """generate columns list"""
+    def save_as_csv_file(self, save=False) -> bool:
+        if save: 
+            self.tweets_df.to_csv('processed_tweet_data.csv', index=False)
+            print('File Successfully Saved.!!!')
+        return save
 
-        columns = ['created_at', 'source', 'original_text', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count',
-                   'original_author', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place']
-
+        """  
         created_at = self.find_created_time()
         source = self.find_source()
         text = self.find_full_text()
@@ -44,17 +50,12 @@ class TweetDfExtractor:
                    screen_name, follower_count, friends_count, sensitivity, hashtags, mentions, location)
         df = pd.DataFrame(data=data, columns=columns)
 
-        if save:
-            # if parameter save = true then save dataframe to CSV file
-            # where to save?
-            fileName = input("Please Enter the Filename: ")
-            df.to_csv('processed_tweet_data.csv', index=False)
-            print('File Successfully Saved.!!!')
+    # Function that retrieves specific columns:
+    def find_column_data(self, listIndex: int) -> pd.DataFrame:
+        return self.tweets_df.iloc[:, listIndex]
+    def find_created_time(self, listIndex: int) -> list:
+        return created_at
 
-        return df
-
-    # example functions
-    """ 
     def find_statuses_count(self) -> list:
         statuses_count
 
@@ -65,10 +66,7 @@ class TweetDfExtractor:
 
         return polarity, self.subjectivity
 
-    def find_created_time(self) -> list:
-
-        return created_at
-
+  
     def find_source(self) -> list:
        source =
 
@@ -110,18 +108,9 @@ class TweetDfExtractor:
 
         return location """
 
-
 if __name__ == "__main__":
     # main function
-    # required column to be generated you should be creative and add more features
-    columns = ['created_at', 'source', 'original_text', 'clean_text', 'sentiment', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count',
-               'original_author', 'screen_count', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
-    tweet_df = pd.read_json(
-        "D:/10XAcademy/Twitter Data/AfricaTwitterData.json", lines=True)
-    print(tweet_df)
-    #tweet = TweetDfExtractor(tweet_list)
-    # constructor is called
-    # tweet.get_columns()
-    # tweet_df = tweet.get_tweet_df()
-
-    # use all defined functions to generate a dataframe with the specified columns above
+    tweet = TweetDfExtractor(read_json_file())
+    # formatted_tweet_df =
+    tweet.save_as_csv_file(save=True)
+    # TODO: use all defined functions to generate a dataframe with the specified columns above
