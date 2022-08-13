@@ -1,34 +1,6 @@
 import json
 import pandas as pd
-import sys
-import numpy as np
 # from textblob import TextBlob
-
-
-def read_json(json_file: str)->list:
-    """
-    json file reader to open and read json files into a list
-    ***********
-    Parameters:
-    -----
-    json_file: str - file path of a json file
-    *******
-    Returns
-    -------
-    length of the json file and a list of json
-    """
-    tweets_data = [] # empty list
-    # open() -> creates a text stream after a file object. r = Read mode
-    # load() -> return a python dictionary given a JSON string 
-    # catch exceptions - Input/output error, file not found error
-    try:
-         with open(json_file,'r') as fileObject:
-            for tweets in fileObject(json_file,'r'):
-                tweets_data.append(json.loads(tweets))
-    
-    except (IOError, FileNotFoundError):
-        print('File not found') # print file not found message
-    return len(tweets_data), tweets_data
 
 class TweetDfExtractor:
     """
@@ -42,14 +14,14 @@ class TweetDfExtractor:
     def __init__(self, tweets_list):
         # class constructor
         self.tweets_list = tweets_list
+
     def get_columns(self):
         iterable = iter(self.tweets_list)
-        tweet_dict = dict(zip(iterable,iterable))
-        print (tweet_dict)
+        tweet_dict = dict(self.tweets_list)
+        print(tweet_dict.keys())
 
     def get_tweet_df(self, save=False) -> pd.DataFrame:
         """generate columns list"""
-
 
         columns = ['created_at', 'source', 'original_text', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count',
                    'original_author', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place']
@@ -138,12 +110,18 @@ class TweetDfExtractor:
 
         return location """
 
+
 if __name__ == "__main__":
+    # main function
     # required column to be generated you should be creative and add more features
-    print("version ", sys.version)
-    columns = ['created_at', 'source', 'original_text', 'clean_text', 'sentiment', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count', 'original_author', 'screen_count', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
-    tweet_list = read_json("D:/10XAcademy/Twitter Data/AfricaTwitterData.json")
-    tweet = TweetDfExtractor(tweet_list)
-    tweet_df = tweet.get_tweet_df()
+    columns = ['created_at', 'source', 'original_text', 'clean_text', 'sentiment', 'polarity', 'subjectivity', 'lang', 'favorite_count', 'retweet_count',
+               'original_author', 'screen_count', 'followers_count', 'friends_count', 'possibly_sensitive', 'hashtags', 'user_mentions', 'place', 'place_coord_boundaries']
+    tweet_df = pd.read_json(
+        "D:/10XAcademy/Twitter Data/AfricaTwitterData.json", lines=True)
+    print(tweet_df)
+    #tweet = TweetDfExtractor(tweet_list)
+    # constructor is called
+    # tweet.get_columns()
+    # tweet_df = tweet.get_tweet_df()
 
     # use all defined functions to generate a dataframe with the specified columns above
