@@ -9,3 +9,5 @@ global_bow.mm
 global_bow.mm.index
 global_lda
 global_mappings.dict
+
+global_tweets.json
