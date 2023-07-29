@@ -1,6 +1,5 @@
 __pycache__/
 data/
-<<<<<<< HEAD
 .env
 .venv
 # VIRTUAL ENVIRONMENT
@@ -10,8 +9,3 @@ global_bow.mm
 global_bow.mm.index
 global_lda
 global_mappings.dict
-
-global_tweets.json
-=======
-.env
->>>>>>> d06bdeef7e2d227bb594f2fa2dff0477f2688e1f
