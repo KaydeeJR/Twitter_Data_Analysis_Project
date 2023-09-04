@@ -2,16 +2,21 @@ import pyLDAvis.gensim
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sys
+sys.path.append("./utils")
+
+from transform_mask import MaskTransformation
+
 from gensim import corpora, models
 from gensim.similarities import MatrixSimilarity
 from gensim.utils import SaveLoad
 from gensim.matutils import corpus2csc, sparse2full, corpus2dense
 
 from collections import Counter
-from wordcloud import WordCloud
+from PIL import Image
 from sklearn.utils import resample
 
-
+from wordcloud import WordCloud
 class TopicModelling:
     """
     A class for performing topic modeling on a collection of tweets.
@@ -22,7 +27,8 @@ class TopicModelling:
     """
 
     def __init__(self):
-        pass
+        # In the event that a mask is available for use as the background of a word cloud
+        self.mask_transformation = MaskTransformation()
 
     def make_dictionary(self, processed_df):
         """
@@ -152,17 +158,33 @@ class TopicModelling:
         ldaViz = pyLDAvis.gensim.prepare(lda_model, tweet_corpus, mapping_dict)
         return ldaViz
 
-    def create_word_cloud(self,tweet_list):
+    def create_word_cloud(self,tweet_list, image_path=""):
         """
-        Create word cloud of tweets
+        Create word cloud of tweets.
+        
+        In order to create a shape for your word cloud, first, you need to find a PNG file to become the mask
+        This PNG file is located in the folder path.
 
         :param tweet_list: the list of words in tweets
 
         :return: the word cloud of tweets
         """
-        word_strings = ' '.join([' '.join(string) for string in tweet_list])
-        topic_cloud = WordCloud(max_font_size=100, scale=8).generate(word_strings)
+        topic_cloud = ""
+                
+        word_strings = ''.join([' '.join(string) for string in tweet_list])
+        
+        # if len(image_path) > 0:
+        #     twitter_mask = np.array(Image.open(image_path))
+        #     transformed_mask = self.mask_transformation.transform_mask(twitter_mask)
+        #     topic_cloud = WordCloud(max_font_size=100, scale=8, background_color = 'white', mask = transformed_mask, 
+        #                             contour_width = 2, contour_color = 'steelblue').generate(word_strings)
+        # else:
+            
+        topic_cloud = WordCloud(max_font_size=100, scale=8, background_color = 'black', contour_width = 2,
+     contour_color = 'steelblue').generate(word_strings)
+                
         fig = plt.figure(figsize=(10, 10), dpi=1600)
         plt.imshow(topic_cloud)
         plt.axis("off")
         plt.show()
+    
