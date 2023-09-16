@@ -144,7 +144,23 @@ class TopicModelling:
         lda_model = SaveLoad.load(filename)
         return lda_model
 
+    def model_analysis(self, lda_model):
+        """
+        TODO:
+        Calculates Perplexity, Coherence Score and prints out topics
+        """
+        #It's a measure of how good the model is. The lower the better. Perplexity is a negative value
+        print('\nPerplexity: ', lda_model.log_perplexity(corpus))  
+        doc_lda = lda_model[corpus]
 
+        lda_model.print_topics()
+        lda_model.show_topics(formatted=False)
+        
+        coherence_model_lda = CoherenceModel(model=lda_model, texts=word_list, dictionary=id2word, coherence='c_v')
+        coherence_lda = coherence_model_lda.get_coherence()
+        print('\n Ldamodel Coherence Score/Accuracy on Tweets: ', coherence_lda)
+    
+    
     def visualize_lda_results(self, lda_model, tweet_corpus, mapping_dict):
         """
         Produce an interactive visualization.
