@@ -2,6 +2,7 @@ __pycache__/
 data/
 .env
 .venv
+.vscode/
 # VIRTUAL ENVIRONMENT
 tweets/
 
