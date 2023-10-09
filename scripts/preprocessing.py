@@ -6,7 +6,6 @@ from nltk.tag import pos_tag
 from re import sub  # regular expressions package
 import pandas as pd
 
-
 class TweetsPreprocessing:
     """
     Preprocessing functions to standardize text one word at a time
@@ -122,7 +121,7 @@ class TweetsPreprocessing:
         'RT I guess #WWIII on its way for #Taiwan'
         """
         words_list = [word for word in text.split(
-        ) if word is not None and not word.startswith('@') and not word.startswith('https')]
+        ) if word is not None and not word.startswith('@') and not word.startswith('https') and not word.startswith('http')]
         phrase = " ".join(words_list)
         return phrase
 
@@ -146,7 +145,7 @@ class TweetsPreprocessing:
 
     def preprocess_tweets_df(self, dataframe, tweets_col):
         """
-        Perform preprocessing on all tweets in a dataframe column
+        Performs preprocessing on all tweets in a dataframe column
 
         :param dataframe: dataframe containing tweets data
         :param part_of_speech: which part of speech to lemmatize.
