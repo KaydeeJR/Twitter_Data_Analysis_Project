@@ -185,8 +185,9 @@ class TopicModelling:
 
         :return: the word cloud of tweets
         """
-        topic_cloud = ""
-                
+        tweet_list_unique = []
+        [tweet_list_unique.append(string) for string in tweet_list if string not in tweet_list_unique] 
+        
         word_strings = ''.join([' '.join(string) for string in tweet_list])
         
         # if len(image_path) > 0:
