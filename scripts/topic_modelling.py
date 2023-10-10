@@ -5,7 +5,7 @@ import numpy as np
 import sys
 sys.path.append("./utils")
 
-from transform_mask import MaskTransformation
+# from transform_mask import MaskTransformation
 
 from gensim import corpora, models
 from gensim.similarities import MatrixSimilarity
@@ -28,7 +28,8 @@ class TopicModelling:
 
     def __init__(self):
         # In the event that a mask is available for use as the background of a word cloud
-        self.mask_transformation = MaskTransformation()
+        # self.mask_transformation = MaskTransformation()
+        pass
 
     def make_dictionary(self, processed_df):
         """
@@ -173,6 +174,19 @@ class TopicModelling:
         """
         ldaViz = pyLDAvis.gensim.prepare(lda_model, tweet_corpus, mapping_dict)
         return ldaViz
+    
+    def save_lda_result(self, lda_visualization, file_name):
+        """
+        Save an interactive visualization as a HTML file.
+
+        :param lda_visualization: the prepared LDA model data
+        :param file_name: the name of the file
+
+        :return: True if the file was saved.
+        """
+        pyLDAvis.save_html(lda_visualization, file_name+r'.html')
+        return True
+
 
     def create_word_cloud(self,tweet_list, image_path=""):
         """
